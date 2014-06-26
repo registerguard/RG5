@@ -55,3 +55,8 @@ sitemap.xml.gz*~
 ####################
 client_secrets.json
 secrets.json
+analytics.dat
+httplib2/*
+apiclient/*
+oauth2client/*
+uritemplate/*
