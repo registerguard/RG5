@@ -60,8 +60,10 @@ def main(argv):
 ### ****** YESTERDAY ****** ###
 ### *********************** ###
 
-yes = date.today() - timedelta(1)
-yesStr = yes.isoformat()
+yes = date.today() - timedelta(1) # Get yesterday
+yesStr = yes.isoformat() # Get year-month-day date for Analytics API
+yesH1 = yes.strftime("%m/%d/%Y") # Get full month/day/year date
+yesDay = yes.strftime("%A") # Get full weekday name
 
 ### ********************* ###
 ### ******* QUERY ******* ###
@@ -114,14 +116,14 @@ def print_data_table(results):
   outputList = outputStr.split(',')
 
   # Create email text
-  emailHead = "<!DOCTYPE html><head><style>body{font-family:'Arial', sans-serif}</style></head><body><h1>Top stories</h1><ol><!-- #1 -->"
+  emailHead = "<!DOCTYPE html><head><style>body{font-family:'Arial', sans-serif}</style></head><body><h1>Top stories from %(WKDY)s, %(DAY)s</h1><ol><!-- #1 -->" % {'WKDY': yesDay, 'DAY': yesH1}
   # Each story must call API data in the list
   email1 = "<li><b><a href='%(LINK1)s'>%(TITLE1)s</a></b> <br>- Clicks:     %(VIEWS1)s</li>" % {'LINK1': outputList[3], 'TITLE1': outputList[4], 'VIEWS1': outputList[5]}
   email2 = "<li><b><a href='%(LINK2)s'>%(TITLE2)s</a></b> <br>- Clicks:     %(VIEWS2)s</li>" % {'LINK2': outputList[6], 'TITLE2': outputList[7], 'VIEWS2': outputList[8]}
   email3 = "<li><b><a href='%(LINK3)s'>%(TITLE3)s</a></b> <br>- Clicks:     %(VIEWS3)s</li>" % {'LINK3': outputList[9], 'TITLE3': outputList[10], 'VIEWS3': outputList[11]}
   email4 = "<li><b><a href='%(LINK4)s'>%(TITLE4)s</a></b> <br>- Clicks:     %(VIEWS4)s</li>" % {'LINK4': outputList[12], 'TITLE4': outputList[13], 'VIEWS4': outputList[14]}
   email5 = "<li><b><a href='%(LINK5)s'>%(TITLE5)s</a></b> <br>- Clicks:     %(VIEWS5)s</li>" % {'LINK5': outputList[15], 'TITLE5': outputList[16], 'VIEWS5': outputList[17]}
-  emailFoot = "</ol><p><small>If this does not display correctly, contact <a href='mailto:rob.denton@registerguard.com'>Rob Denton</a></small></p></body>"
+  emailFoot = "</ol><p><small>If this does not display correctly, please contact the web team at <a href='mailto:webeditors@registerguard.com'>webeditors@registerguard.com</a></small></p></body>"
   # Concatenate
   email = emailHead + email1 + email2 + email3 + email4 + email5 + emailFoot
   # encode so that it doesn't throw an error in the email
