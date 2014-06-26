@@ -12,6 +12,7 @@ Omitted files (for simplicity and security's sake) include:
 * uritemplate module folder
 
 Basic instructions:
+
 1. Access your dev console and create a new project
 1. Allow Analytics API, create a new Client ID for an installed app and download JSON
 1. mkdir and mkvirtualenv on your local box
