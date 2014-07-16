@@ -18,6 +18,8 @@ from email.MIMEText import MIMEText
 
 import json
 
+import pprint
+
 with open("secrets.json") as f:
     secrets = json.loads(f.read())
 
@@ -75,9 +77,8 @@ def get_results(service):
       ids=get_secret("tableID"),
       start_date=yesStr,
       end_date=yesStr,
-      #metrics='ga:sessions' ).execute()
-      metrics='ga:pageviews',
       dimensions='ga:pagePath,ga:pageTitle',
+      metrics='ga:pageviews',
       sort='-ga:pageviews',
       max_results='5' ).execute()
 
@@ -88,6 +89,9 @@ def get_results(service):
 def print_data_table(results):
   # Print headers.
   output = []
+  for result in results:
+    print "   type:", type(result)
+    print "   dir:", dir(result)
   for header in results.get('columnHeaders'):
     output.append('%s' % header.get('name'))
   output.append(';') # add semicolon to end of first line in list
@@ -102,7 +106,7 @@ def print_data_table(results):
       output.append(';') # add semicolon to end of each row
       outputStr = ', '.join(output) # converts list to string
       #print output #prints for each row
-    #print output #prints at end
+    pprint.pprint(output) # output #prints at end
   else:
     print 'No Results Found'
 
@@ -151,7 +155,7 @@ def print_data_table(results):
   server.ehlo()
   # From email user and pass
   server.login(get_secret("email_user"), get_secret("email_pass"))
-  server.sendmail(fromaddr, toaddr, msg.as_string())
+  #server.sendmail(fromaddr, toaddr, msg.as_string())
 
   print "sent!" # Hooray!
 
