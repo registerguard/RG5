@@ -62,6 +62,8 @@ def main(argv):
 ### ****** YESTERDAY ****** ###
 ### *********************** ###
 
+# MAKE THIS SEVEN DAYS
+
 yes = date.today() - timedelta(1) # Get yesterday
 yesStr = yes.isoformat() # Get year-month-day date for Analytics API
 yesH1 = yes.strftime("%m/%d/%Y") # Get full month/day/year date
@@ -77,9 +79,9 @@ def get_results(service):
       ids=get_secret("tableID"),
       start_date=yesStr,
       end_date=yesStr,
-      dimensions='ga:pagePath,ga:pageTitle',
-      metrics='ga:pageviews',
-      sort='-ga:pageviews',
+      dimensions='ga:dimension2, ga:dimension1, ga:dimension3, ',
+      metrics='ga:uniquePageviews',
+      sort='-ga:uniquePageviews',
       max_results='5' ).execute()
 
 ### *********************** ###
@@ -138,9 +140,9 @@ def print_data_table(results):
 ### ********************* ###
 
   # From:
-  fromaddr = get_secret("email")
+  fromaddr = get_secret("fromemail")
   # To: 
-  toaddr = [get_secret("rob"),get_secret("rob2"),get_secret("rob3")]
+  toaddr = [get_secret("rob")]
   msg = MIMEMultipart('alternative')
   msg['From'] = fromaddr
   #Subject
@@ -154,9 +156,11 @@ def print_data_table(results):
   server.starttls()
   server.ehlo()
   # From email user and pass
-  server.login(get_secret("email_user"), get_secret("email_pass"))
+  server.login(get_secret("fromemail_user"), get_secret("fromemail_pass"))
+  
+  # *** UNCOMMENT THIS TO SEND EMAIL ***
   #server.sendmail(fromaddr, toaddr, msg.as_string())
-
+  
   print "sent!" # Hooray!
 
 ### ******************** ###
