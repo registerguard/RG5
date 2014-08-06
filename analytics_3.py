@@ -79,10 +79,10 @@ def get_results(service):
       ids=get_secret("tableID"),
       start_date=yesStr,
       end_date=yesStr,
-      dimensions='ga:dimension2, ga:dimension1, ga:dimension3, ',
+      dimensions='ga:dimension1, ga:dimension2, ga:dimension3, ga:dimension4, ga:dimension5',
       metrics='ga:uniquePageviews',
       sort='-ga:uniquePageviews',
-      max_results='5' ).execute()
+      max_results='10' ).execute()
 
 ### *********************** ###
 ### ******* RESULTS ******* ###
@@ -108,7 +108,7 @@ def print_data_table(results):
       output.append(';') # add semicolon to end of each row
       outputStr = ', '.join(output) # converts list to string
       #print output #prints for each row
-    pprint.pprint(output) # output #prints at end
+    #pprint.pprint(output) # output #prints at end
   else:
     print 'No Results Found'
 
@@ -116,22 +116,24 @@ def print_data_table(results):
   # Has new line on semicolon
   #outputStr = outputStr.replace(" | The Register-Guard | Eugene, Oregon","").replace(";","\n").replace(", /rg/","http://registerguard.com/rg/")
   # Does not have new line on semicolon
-  outputStr = outputStr.replace(" | The Register-Guard | Eugene, Oregon","").replace(";","").replace(", /rg/","http://registerguard.com/rg/")
+  #outputStr = outputStr.replace(" | The Register-Guard | Eugene, Oregon","").replace(", /rg/","http://registerguard.com/rg/")
 
   # Split the string back into a list to call in email
   outputList = outputStr.split(',')
+  print outputList
 
   # Create email text
   emailHead = "<!DOCTYPE html><head><style>body{font-family:'Arial', sans-serif}</style></head><body><h1>Top stories from %(WKDY)s, %(DAY)s</h1><ol><!-- #1 -->" % {'WKDY': yesDay, 'DAY': yesH1}
   # Each story must call API data in the list
-  email1 = "<li><b><a href='%(LINK1)s'>%(TITLE1)s</a></b> <br>- Clicks:     %(VIEWS1)s</li>" % {'LINK1': outputList[3], 'TITLE1': outputList[4], 'VIEWS1': outputList[5]}
-  email2 = "<li><b><a href='%(LINK2)s'>%(TITLE2)s</a></b> <br>- Clicks:     %(VIEWS2)s</li>" % {'LINK2': outputList[6], 'TITLE2': outputList[7], 'VIEWS2': outputList[8]}
-  email3 = "<li><b><a href='%(LINK3)s'>%(TITLE3)s</a></b> <br>- Clicks:     %(VIEWS3)s</li>" % {'LINK3': outputList[9], 'TITLE3': outputList[10], 'VIEWS3': outputList[11]}
-  email4 = "<li><b><a href='%(LINK4)s'>%(TITLE4)s</a></b> <br>- Clicks:     %(VIEWS4)s</li>" % {'LINK4': outputList[12], 'TITLE4': outputList[13], 'VIEWS4': outputList[14]}
-  email5 = "<li><b><a href='%(LINK5)s'>%(TITLE5)s</a></b> <br>- Clicks:     %(VIEWS5)s</li>" % {'LINK5': outputList[15], 'TITLE5': outputList[16], 'VIEWS5': outputList[17]}
+  email1 = "<li><b><a href='%(LINK1)s'>%(TITLE1)s</a></b> - %(AUTHOR1)s <br>- Clicks:     %(VIEWS1)s</li>" % {'LINK1': outputList[11], 'TITLE1': outputList[12], 'AUTHOR1': outputList[7], 'VIEWS1': outputList[13]}
+  email2 = "<li><b><a href='%(LINK2)s'>%(TITLE2)s</a></b> - %(AUTHOR2)s <br>- Clicks:     %(VIEWS2)s</li>" % {'LINK2': outputList[19], 'TITLE2': outputList[20], 'AUTHOR2': outputList[15], 'VIEWS2': outputList[21]}
+  email3 = "<li><b><a href='%(LINK3)s'>%(TITLE3)s</a></b> - %(AUTHOR3)s <br>- Clicks:     %(VIEWS3)s</li>" % {'LINK3': outputList[27], 'TITLE3': outputList[28], 'AUTHOR3': outputList[23], 'VIEWS3': outputList[29]}
+  email4 = "<li><b><a href='%(LINK4)s'>%(TITLE4)s</a></b> - %(AUTHOR4)s <br>- Clicks:     %(VIEWS4)s</li>" % {'LINK4': outputList[35], 'TITLE4': outputList[36], 'AUTHOR4': outputList[31], 'VIEWS4': outputList[37]}
+  email5 = "<li><b><a href='%(LINK5)s'>%(TITLE5)s</a></b> - %(AUTHOR5)s <br>- Clicks:     %(VIEWS5)s</li>" % {'LINK5': outputList[43], 'TITLE5': outputList[44], 'AUTHOR5': outputList[39], 'VIEWS5': outputList[45]}
   emailFoot = "</ol><p><small>If this does not display correctly, please contact the web team at <a href='mailto:webeditors@registerguard.com'>webeditors@registerguard.com</a></small></p></body>"
   # Concatenate
   email = emailHead + email1 + email2 + email3 + email4 + email5 + emailFoot
+  print email
   # encode so that it doesn't throw an error in the email
   email = email.encode('utf-8')
   
@@ -142,7 +144,7 @@ def print_data_table(results):
   # From:
   fromaddr = get_secret("fromemail")
   # To: 
-  toaddr = [get_secret("rob")]
+  toaddr = [get_secret("toemail")]
   msg = MIMEMultipart('alternative')
   msg['From'] = fromaddr
   #Subject
@@ -159,8 +161,7 @@ def print_data_table(results):
   server.login(get_secret("fromemail_user"), get_secret("fromemail_pass"))
   
   # *** UNCOMMENT THIS TO SEND EMAIL ***
-  #server.sendmail(fromaddr, toaddr, msg.as_string())
-  
+  server.sendmail(fromaddr, toaddr, msg.as_string())
   print "sent!" # Hooray!
 
 ### ******************** ###

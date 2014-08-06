@@ -12,6 +12,20 @@ Omitted files (for simplicity and security's sake) include:
 * httplib2 module folder
 * uritemplate module folder
 
+## secrets.json
+
+```json
+{
+  "tableID": "ga:----------",
+  "fromemail": "-------@---.com",
+  "toemails": "-------@----.com, -------@----.com",
+  "fromemail_user": "-------",
+  "fromemail_pass": "------"
+}
+
+```
+
+
 Before we begin, you will need:
 
 * The [Google Analytics Table ID](https://developers.google.com/analytics/devguides/reporting/core/v3/index#user_reports) for the table you want to query
