@@ -25,6 +25,13 @@ Omitted files (for simplicity and security's sake) include:
 
 ```
 
+## Notes
+
+* All `print` statements must be commented out for the cron unless you encode everything to utf-8 that's going out. If anything is printed it will create a Terminal email. If running on a server that would add up and be no good.
+* The title change is a big problem for the API. For example, on a query of the storyid and unique pageviews of 8/5/14 the most read piece is 31970913. This story had 1,146 hits total over two titles. The second title had 261 hits and the first had 885. This break, however, pushes the story out of the top five because the number five story has 896.
+
+
+## How to
 
 Before we begin, you will need:
 

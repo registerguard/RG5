@@ -18,8 +18,6 @@ from email.MIMEText import MIMEText
 
 import json
 
-import pprint
-
 with open("secrets.json") as f:
     secrets = json.loads(f.read())
 
@@ -91,9 +89,9 @@ def get_results(service):
 def print_data_table(results):
   # Print headers.
   output = []
-  for result in results:
-    print "   type:", type(result)
-    print "   dir:", dir(result)
+  #for result in results:
+    #print "   type:", type(result)
+    #print "   dir:", dir(result)
   for header in results.get('columnHeaders'):
     output.append('%s' % header.get('name'))
   output.append(';') # add semicolon to end of first line in list
@@ -108,7 +106,7 @@ def print_data_table(results):
       output.append(';') # add semicolon to end of each row
       outputStr = ', '.join(output) # converts list to string
       #print output #prints for each row
-    #pprint.pprint(output) # output #prints at end
+    #print output # output #prints at end
   else:
     print 'No Results Found'
 
@@ -120,7 +118,7 @@ def print_data_table(results):
 
   # Split the string back into a list to call in email
   outputList = outputStr.split(',')
-  print outputList
+  #print outputList
 
   # Create email text
   emailHead = "<!DOCTYPE html><head><style>body{font-family:'Arial', sans-serif}</style></head><body><h1>Top stories from %(WKDY)s, %(DAY)s</h1><ol><!-- #1 -->" % {'WKDY': yesDay, 'DAY': yesH1}
@@ -133,7 +131,7 @@ def print_data_table(results):
   emailFoot = "</ol><p><small>If this does not display correctly, please contact the web team at <a href='mailto:webeditors@registerguard.com'>webeditors@registerguard.com</a></small></p></body>"
   # Concatenate
   email = emailHead + email1 + email2 + email3 + email4 + email5 + emailFoot
-  print email
+  #print email
   # encode so that it doesn't throw an error in the email
   email = email.encode('utf-8')
   
@@ -162,7 +160,7 @@ def print_data_table(results):
   
   # *** UNCOMMENT THIS TO SEND EMAIL ***
   server.sendmail(fromaddr, toaddr, msg.as_string())
-  print "sent!" # Hooray!
+  #print "sent!" # Hooray!
 
 ### ******************** ###
 ### ******* CALL ******* ###
@@ -171,4 +169,4 @@ def print_data_table(results):
 if __name__ == '__main__':
   main(sys.argv)
 
-print "done" # YUS
+#print "done" # YUS
